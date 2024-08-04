@@ -1,9 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define MAX_VENUE_NAME_SIZE 100
+#define MAX_LOC_SIZE 100
+#define MAX_CAP_SIZE 100
+#define MAX_INPUT_SIZE 1000
+
 struct venue{
     struct venue * next;
-    char name[100],loc[100],cap[100];//,eventName[100];//assuming max length of these strings can be 100
+    char name[MAX_VENUE_NAME_SIZE],loc[MAX_LOC_SIZE],cap[MAX_CAP_SIZE];//,eventName[100];//assuming max length of these strings can be 100
     char*date[30][24];//maybe here i'll need [31][24]!!!!
 
 
@@ -37,7 +43,7 @@ char * separateCommand(char x[]){
 
 struct venue * addVenue(struct venue *head, int *venueCount, char userInput[])
 {
-    char name[100], loc[100], cap[100];
+    char name[MAX_VENUE_NAME_SIZE],loc[MAX_LOC_SIZE],cap[MAX_CAP_SIZE];
     // need to get the "name"
     int i = sizeof("addVenue"); // i'll start to search for "name", its index will definetely be after "addVenue"
     while (userInput[i] != '"')
@@ -83,7 +89,7 @@ struct venue * addVenue(struct venue *head, int *venueCount, char userInput[])
             if(strcmp(name,temp->name)==0){
                 //this means that this venue already exists!
                 //error
-                printf("This venue already exists\n");
+                printf("-1\nDuplicate venue name\n");
                 fflush(stdout);
                 return head;
             }
@@ -97,6 +103,7 @@ struct venue * addVenue(struct venue *head, int *venueCount, char userInput[])
     strcpy(a->cap,cap);
     a->next=head;
     (*venueCount)++;
+    printf("0\n");//0 printed for success
     return a;
 
 }
@@ -112,10 +119,54 @@ void showVenues(struct venue * head, int venueCount){
     }
 }
 
+struct venue* delVenue(int * venueCount, struct venue * head,char userInput[]){
+    if(head==NULL){
+        printf("-1\nError: no such venue\n");
+        return head;
+    }
 
+    //delVenue "nameOfVenue"
+    //I need to extract the name of Venue from the userInput
+    char name[MAX_VENUE_NAME_SIZE];
+    int i=sizeof("delVenue");//i will look for first '"' only after this index
+    while (userInput[i] != '"')
+        i++;
+    i++;
+    int j = 0; // index to point to name array for writing
+    while (userInput[i] != '"')
+        name[j++] = userInput[i++];
+    i++;
+    name[j] = '\0';
+
+    //now I'll search for the this venue in my linked list
+    //only 2 cases here- either the venue is present in the LL, if not-then error(-1)
+
+    //code for deleting from linkedList
+    if(strcmp(head->name,name)==0){//dealing with the case when the venue is in the head itself!
+        struct venue * temp=head->next;
+        free(head);
+        (*venueCount)--;
+        printf("0\n");//0 printed for success
+        return temp;
+    }
+    
+    while(head->next){
+        if(strcmp(head->next->name,name)==0){
+            struct venue*temp=head->next;
+            head->next=temp->next;
+            free(temp);
+            printf("0\n");//0 printed for success
+            (*venueCount)--;
+            return head;
+        }
+        head=head->next;
+    }
+    printf("-1\nError: no such venue\n");
+    return head;
+}
 
 int main(){
-    char userInput[1000];//assuming that the ip given will never be more than 1000 chars
+    char userInput[MAX_INPUT_SIZE];//assuming that the ip given will never be more than 1000 chars
     fgets(userInput,sizeof(userInput),stdin);
     int venueCount=0;
     struct venue * head=NULL;//this is the linked list that will store the venues
@@ -123,14 +174,14 @@ int main(){
     while(strcmp(userInput,"End\n")!=0){
         char * command=separateCommand(userInput);
         if(!strcmp(command,"addVenue")){
-                head=addVenue(head,&venueCount,userInput);
+            head=addVenue(head,&venueCount,userInput);
 
         }
         else if(!strcmp(command,"showVenues")){
             showVenues(head,venueCount);
         }
-        else if(!strcmp(command,"deleteVenue")){
-
+        else if(!strcmp(command,"delVenue")){
+            head=delVenue(&venueCount,head,userInput);
         }
         else if(!strcmp(command,"addEvent")){
 
