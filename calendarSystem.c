@@ -176,7 +176,7 @@ struct venue* delVenue(int * venueCount, struct venue * head,char userInput[]){
 }
 
 void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
-    //i have to insert event "eName" in venue 'v' at date 'd'. Start:f and End:t
+    //i have to insert event "eName" in venue 'v' at date 'd'. from-time:f and to-time:t
 
     d--;//doing this because struct event*date[30] in struct venue. Index of array starts from 0
     if(v->date[d]==NULL){
@@ -189,24 +189,72 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
         v->date[d]=a;
         v->totalEvents++;
         v->eventsOnDate[d]++;
+        printf("0\n");
         return;
     }
     //if that date already has some events, then I have to check if an event is already there bw from-time till end-time
-    struct event* x=v->date[d];
-    while(x){
-        if(t < x->s){
-            //insert condition
+    struct event* x=v->date[d];//this is the head of the linked list
 
+    //first i'll check if the head of this linked list satisfies the insertion condition
+    if(t < x->s){
+        struct event * a=malloc(sizeof(struct event));
+        a->s=f;
+        a->e=t;
+        strcpy(a->name,eName);
+        a->next=x;
+        v->date[d]=a;
+        v->totalEvents++;
+        v->eventsOnDate[d]++;
+        printf("0\n");
+        return;
+    }
+    else if(x->e < f){//now here i'll check for x->next so that i can easily insert in the linkedList
+        struct event * p=x;
+        x=x->next;
+        while(x){
+            if(t < x->s){
+                //insert condition
+                struct event * a=malloc(sizeof(struct event));
+                a->s=f;
+                a->e=t;
+                strcpy(a->name,eName);
+                a->next=x;
+                v->date[d]=a;
+                v->totalEvents++;
+                v->eventsOnDate[d]++;
+                p->next=a;
+                printf("0\n");
+                return;
+            }
+            else if(x->e < f){
+                //move on condition
+                p=x;
+                x=x->next;
+            }
+            else{
+                //error
+                printf("-1\nError: time slot is occupied by another event\n");
+                return;
+            }
         }
-        else if(x->e < f){
-            //move on condition
-        }
-        else if(x->s <= t){
-            //error 
-        }
-        else if(f >= x->e){
-            //error
-        }
+        //if we exit this while loop, it means that we encountered null
+        //we also have to insert here
+        struct event * a=malloc(sizeof(struct event));
+        a->s=f;
+        a->e=t;
+        strcpy(a->name,eName);
+        a->next=NULL;
+        v->date[d]=a;
+        v->totalEvents++;
+        v->eventsOnDate[d]++;
+        p->next=a;
+        printf("0\n");
+        return;
+
+    }
+    else{
+        //error--clashes with the head event itself
+        printf("-1\nError: time slot is occupied by another event\n");
     }
 
 }
