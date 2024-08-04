@@ -21,9 +21,9 @@ struct venue * defaultVenue(){//so that the date pointer array will be filled wi
 }
 
 char * separateCommand(char x[]){
-    //need a function to separate out the first word of the input
+    //need a function to separate out the first word of the userInput
     // printf("%s","i'm inside\n");
-
+    //assuming no leading spaces, tabs etc in the userInput!!!!!!
     int i=0;
     char * a=malloc(1000);//assuming the first word won't be more than 1000 chars long 
     while(x[i]!=' ' && x[i]!='\n'){
@@ -89,36 +89,30 @@ struct venue * addVenue(struct venue *head, int *venueCount, char userInput[])
             }
             temp=temp->next;
         }
-        //now , we know that venue of same name isn't there already, so i'll add it
-        struct venue * a=defaultVenue();
-        strcpy(head->name,name);
-        strcpy(head->loc,loc);
-        strcpy(head->cap,cap);
-        a->next=head;
-        (*venueCount)++;
-        return a;
-
     }
-    else
-    {
-        head=defaultVenue();
-        strcpy(head->name,name);
-        strcpy(head->loc,loc);
-        strcpy(head->cap,cap);
-
-    }
+    //now , we know that venue of same name isn't there already, so i'll add it
+    struct venue * a=defaultVenue();
+    strcpy(a->name,name);
+    strcpy(a->loc,loc);
+    strcpy(a->cap,cap);
+    a->next=head;
     (*venueCount)++;
-    return head;
+    return a;
+
 }
 
 void showVenues(struct venue * head, int venueCount){
     printf("%d\n",venueCount);
+    
     while(head){
-        printf("hola");
+        // printf("hola ");
         printf("%s %s %s\n",head->name,head->loc,head->cap);
+        fflush(stdout);
         head=head->next;
     }
 }
+
+
 
 int main(){
     char userInput[1000];//assuming that the ip given will never be more than 1000 chars
@@ -130,7 +124,6 @@ int main(){
         char * command=separateCommand(userInput);
         if(!strcmp(command,"addVenue")){
                 head=addVenue(head,&venueCount,userInput);
-
 
         }
         else if(!strcmp(command,"showVenues")){
