@@ -259,7 +259,6 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
 
 }
 
-
 void addEvent(struct venue * head,char userInput[]){
     //addEvent "venueName" date from to "eventName" <---i'll need to separate all these things here
     char vName[MAX_VENUE_NAME_SIZE],eName[MAX_EVENT_NAME_SIZE];
@@ -329,10 +328,65 @@ void addEvent(struct venue * head,char userInput[]){
             insertEventInVenue(temp,eName,d,f,t);
             return;
         }
+        temp=temp->next;
     }
     //if such a venue doesn't exist
     printf("-1\nError: no such venue\n");
     return;
+}
+
+void showEvents(struct venue * head, char userInput[]){
+    // printf("hola");
+    if(head==NULL){
+        printf("-1\nError: no such venue\n");
+        return;
+    }
+
+    //format: showEvents “Place de la Concorde” 8
+    char vName[MAX_VENUE_NAME_SIZE],date[MAX_DATE];
+    
+    //first i'll get the "venueName"
+    int i=sizeof("showEvents");//i'll search for first " after this index
+    while(userInput[i]!='"') i++;
+    i++;
+    int a=0;//will point to vName array for writing
+    while(userInput[i]!='"') vName[a++]=userInput[i++];
+    vName[a]='\0';
+
+    //now need the date
+    while(!(userInput[i]>='0' && userInput[i]<='9')) i++;
+    a=0;//will now point to date array for writing
+    while(userInput[i]>='0' && userInput[i]<='9') date[a++]=userInput[i++];
+    date[a]='\0';
+
+    //now first i'll check if the date given is valid or not
+    if(strlen(date)>2){
+        printf("-1\nError: date is invalid\n");
+        return;
+    }
+    int d=atoi(date);//this inbuilt-function converts date-string to date-integer
+    if(d<1 || d>30){
+        printf("-1\nError: date is invalid\n");
+        return;
+    } 
+    //now i'll search for the venue in the linked list
+    d--;//because date array is 0-indexed
+    while(head){
+        if(strcmp(head->name,vName)==0){
+            printf("%d\n",head->eventsOnDate[d]);
+            //i just have to iterate through the linked list head->date[d] and print
+            struct event* a=head->date[d];
+            while(a){
+                printf("%s %d %d\n",a->name,a->s,a->e);
+                a=a->next;
+            }
+            return;
+        }
+        head=head->next;
+    }
+    //if we exit the while loop, it means that the given venue doesn't exist
+    printf("-1\nError: no such venue\n");
+
 }
 
 int main(){
@@ -360,7 +414,7 @@ int main(){
 
         }
         else if(!strcmp(command,"showEvents")){
-
+            showEvents(head,userInput);
         }
         else if(!strcmp(command,"showCalendar")){
 
