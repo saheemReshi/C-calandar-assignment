@@ -13,7 +13,7 @@
 
 struct event{
     char name[MAX_EVENT_NAME_SIZE];
-    int from,to;
+    int s,e;//start and end time of event
     struct event *next;
 };
 
@@ -175,7 +175,44 @@ struct venue* delVenue(int * venueCount, struct venue * head,char userInput[]){
     return head;
 }
 
-struct venue* addEvent(struct venue * head,char userInput[]){
+void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
+    //i have to insert event "eName" in venue 'v' at date 'd'. Start:f and End:t
+
+    d--;//doing this because struct event*date[30] in struct venue. Index of array starts from 0
+    if(v->date[d]==NULL){
+        //means no events for this date, so can easily insert
+        struct event * a=malloc(sizeof(struct event));
+        a->s=f;
+        a->e=t;
+        strcpy(a->name,eName);
+        a->next=NULL;
+        v->date[d]=a;
+        v->totalEvents++;
+        v->eventsOnDate[d]++;
+        return;
+    }
+    //if that date already has some events, then I have to check if an event is already there bw from-time till end-time
+    struct event* x=v->date[d];
+    while(x){
+        if(t < x->s){
+            //insert condition
+
+        }
+        else if(x->e < f){
+            //move on condition
+        }
+        else if(x->s <= t){
+            //error 
+        }
+        else if(f >= x->e){
+            //error
+        }
+    }
+
+}
+
+
+void addEvent(struct venue * head,char userInput[]){
     //addEvent "venueName" date from to "eventName" <---i'll need to separate all these things here
     char vName[MAX_VENUE_NAME_SIZE],eName[MAX_EVENT_NAME_SIZE];
     char date[MAX_DATE],from[MAX_HOURS],to[MAX_HOURS];//first i'll extract these from the input as strings and then later change them to integers
@@ -222,20 +259,32 @@ struct venue* addEvent(struct venue * head,char userInput[]){
     // printf("%s %s %s %s %s\n",vName,date,from,to,eName);
 
     if(strlen(date)>2 || strlen(from)>2 || strlen(to)>2){
-            printf("Error: Invalid date or time");
-            return head;
+            printf("-1\nError: Invalid date or time\n");
+            return;
     }
     int d=atoi(date),f=atoi(from),t=atoi(to);//these are date, from-time, to-time in integer format for error checking
 
-    if(d<0 || d>30 || f<0 || f>23 || t<0 || t>23){
-        printf("Error: Invalid date or time");
-        return head;
+    if(d<1 || d>30 || f<0 || f>23 || t<0 || t>23 || f>t){
+        printf("-1\nError: Invalid date or time\n");
+        return;
     }
 
+    // printf("%d %d %d\n",d,f,t);
+    
     //now, everything is valid(fornow!)
 
-
-
+    //now i'll search for the venue in the linkedList
+    struct venue* temp=head;
+    while(temp){
+        if(strcmp(temp->name,vName)==0){
+            //new function for this
+            insertEventInVenue(temp,eName,d,f,t);
+            return;
+        }
+    }
+    //if such a venue doesn't exist
+    printf("-1\nError: no such venue\n");
+    return;
 }
 
 int main(){
@@ -257,7 +306,7 @@ int main(){
             head=delVenue(&venueCount,head,userInput);
         }
         else if(!strcmp(command,"addEvent")){
-            head=addEvent(head,userInput);
+            addEvent(head,userInput);
         }
         else if(!strcmp(command,"delEvent")){
 
