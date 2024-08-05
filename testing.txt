@@ -3,11 +3,12 @@ addVenue "a" "b" 4
 addVenue "i" "r" 4
 addVenue "j" "k" 4
 showVenues
-delVenue-- "a"
+delVenue "a"
 addEvent "a" 5 8 9 "b"
 addEvent "a" 3 8 9 "c"
 addEvent "a" 3 1 2 "j"
 addEvent "a" 3 2 3 "j"
 showEvents "a" 3
 showEvents "a" 5
+showCalendar "a"
 End

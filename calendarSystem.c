@@ -389,6 +389,42 @@ void showEvents(struct venue * head, char userInput[]){
 
 }
 
+void showCalendar(struct venue * head, char userInput[]){
+    //format: showCalendar <venueName-string>
+    if(head==NULL){
+        printf("-1\nError: no such venue\n");
+        return;
+    }
+    //i have to extract the venue name string 
+    char vName[MAX_VENUE_NAME_SIZE];
+    
+    //first i'll get the "venueName"
+    int i=sizeof("showCalendar");//i'll search for first " after this index
+    while(userInput[i]!='"') i++;
+    i++;
+    int a=0;//will point to vName array for writing
+    while(userInput[i]!='"') vName[a++]=userInput[i++];
+    vName[a]='\0';
+    //now i'll search for the venue in the linked list
+    while(head){
+        if(strcmp(head->name,vName)==0){
+            printf("%d\n",head->totalEvents);
+            for(int d=0; d<30; d++){
+                printf("%d %d\n",d+1,head->eventsOnDate[d]);//d+1 bcz the array is 0-indexed
+                struct event* temp=head->date[d];
+                while(temp){
+                    printf("%s %d %d\n",temp->name,temp->s,temp->e);
+                    temp=temp->next;
+                }
+            }
+            return;
+        }
+        head=head->next;
+    }
+    //if we exit the while loop, it means that the given venue doesn't exist
+    printf("-1\nError: no such venue\n");
+}
+
 int main(){
     char userInput[MAX_INPUT_SIZE];//assuming that the ip given will never be more than 1000 chars
     fgets(userInput,sizeof(userInput),stdin);
@@ -417,7 +453,7 @@ int main(){
             showEvents(head,userInput);
         }
         else if(!strcmp(command,"showCalendar")){
-
+            showCalendar(head,userInput);
         }
         else{
             //no such command exists
