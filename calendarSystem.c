@@ -425,6 +425,75 @@ void showCalendar(struct venue * head, char userInput[]){
     printf("-1\nError: no such venue\n");
 }
 
+void deleteEventInVenue(struct venue* v,char eName[],int d,int f){
+
+}
+
+void delEvent(struct venue * head, char userInput[]){
+    //deleteEvent <venueName-string> <date-integer> <fromHour-integer> <eventName-string>
+    //delEvent “Rolland-Garros” 5 15 “Womens Tennis”
+
+    char vName[MAX_VENUE_NAME_SIZE], eName[MAX_EVENT_NAME_SIZE], date[MAX_DATE], from[MAX_HOURS];
+    int i=sizeof("delEvent");
+    while(userInput[i]!='"'){
+        i++;
+    }
+    i++;
+    int a=0;//it will point to vName array for filling
+    while(userInput[i]!='"'){
+        vName[a++]=userInput[i++];
+    }
+    vName[a]='\0';
+    i++;
+
+    //now need date
+    while(!(userInput[i]>='0' && userInput[i]<='9')) i++;
+    a=0;//will point to date array for writing
+    while(userInput[i]>='0' && userInput[i]<='9') date[a++]=userInput[i++];
+    date[a]='\0';
+
+    //now need from-time
+    while(!(userInput[i]>='0' && userInput[i]<='9')) i++;
+    a=0;//will point to from array for writing
+    while(userInput[i]>='0' && userInput[i]<='9') from[a++]=userInput[i++];
+    from[a]='\0';
+
+    //now need event-name
+    while(userInput[i]!='"') i++;
+    i++;
+    a=0;//will point to eName array for writing
+    while(userInput[i]!='"'){
+        eName[a++]=userInput[i++];
+    }
+    i++;
+    eName[a]='\0';
+
+    if(strlen(date)>2 || strlen(from)>2 ){
+                printf("-1\nError: Invalid date or time\n");
+                return;
+        }
+    int d=atoi(date),f=atoi(from);//these are date, from-time in integer format for error checking
+
+    if(d<1 || d>30 || f<0 || f>23){
+        printf("-1\nError: Invalid date or time\n");
+        return;
+    }
+
+    //now i'll search for the venue in the linkedList
+    struct venue* temp=head;
+    while(temp){
+        if(strcmp(temp->name,vName)==0){
+            //new function for this
+            deleteEventInVenue(temp,eName,d,f);
+            return;
+        }
+        temp=temp->next;
+    }
+    //if such a venue doesn't exist
+    printf("-1\nError: no such venue\n");
+    return;
+}
+
 int main(){
     char userInput[MAX_INPUT_SIZE];//assuming that the ip given will never be more than 1000 chars
     fgets(userInput,sizeof(userInput),stdin);
