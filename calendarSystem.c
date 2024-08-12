@@ -426,7 +426,45 @@ void showCalendar(struct venue * head, char userInput[]){
 }
 
 void deleteEventInVenue(struct venue* v,char eName[],int d,int f){
+    struct event * temp=v->date[d];
+    if(!temp){
+        //no events added
+        //error
+        printf("-1\nNo such venue\n");
+        return;
+    }
 
+    //first need to check the head of the linked list separately
+    if(temp->s==f && strcmp(temp->name,eName)==0){
+        v->date[d]=temp->next;
+        free(temp);
+        v->totalEvents--;
+        v->eventsOnDate[d]--;
+        printf("0\n");
+        return;
+    }
+    struct event * p=temp;
+    temp=temp->next;
+    while(temp){
+        if(temp->s > f) break;//because events are in sorted order
+        
+        else if(temp->s == d){
+            //now check name
+            if(strcmp(eName,temp->name)==0){
+                p->next=temp->next;
+                free(temp);
+                v->totalEvents--;
+                v->eventsOnDate[d]--;
+                printf("0\n");
+                return;
+            }
+            break;
+        }
+        p=temp;
+        temp=temp->next;
+    }
+    printf("-1\nNo such venue\n");
+    return;
 }
 
 void delEvent(struct venue * head, char userInput[]){
