@@ -4,11 +4,16 @@ addVenue "i" "r" 4
 addVenue "j" "k" 4
 showVenues
 delVenue "a"
-addEvent "a" 5 8 9 "b"
-addEvent "a" 3 8 9 "c"
-addEvent "a" 3 1 2 "j"
-addEvent "a" 3 2 3 "j"
-showEvents "a" 3
-showEvents "a" 5
-showCalendar "a"
+addEvent "x" 5 8 9 "b"
+addEvent "x" 3 8 9 "c"
+addEvent "x" 3 1 2 "j"
+addEvent "x" 3 2 3 "j"
+showEvents "x" 3
+showEvents "x" 5
+showCalendar "x"
+delEvent "x" 3 1 "j"
+delEvent "x" 3 8 "c"
+showEvents "x" 3
 End
+
+//delEvent “Rolland-Garros” 5 15 “Womens Tennis”

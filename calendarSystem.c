@@ -426,6 +426,8 @@ void showCalendar(struct venue * head, char userInput[]){
 }
 
 void deleteEventInVenue(struct venue* v,char eName[],int d,int f){
+    // printf("hola\n");
+    d--;//because the array is zero-indexed
     struct event * temp=v->date[d];
     if(!temp){
         //no events added
@@ -470,7 +472,7 @@ void deleteEventInVenue(struct venue* v,char eName[],int d,int f){
 void delEvent(struct venue * head, char userInput[]){
     //deleteEvent <venueName-string> <date-integer> <fromHour-integer> <eventName-string>
     //delEvent “Rolland-Garros” 5 15 “Womens Tennis”
-
+    // printf("hola\n");
     char vName[MAX_VENUE_NAME_SIZE], eName[MAX_EVENT_NAME_SIZE], date[MAX_DATE], from[MAX_HOURS];
     int i=sizeof("delEvent");
     while(userInput[i]!='"'){
@@ -554,7 +556,7 @@ int main(){
             addEvent(head,userInput);
         }
         else if(!strcmp(command,"delEvent")){
-
+            delEvent(head,userInput);
         }
         else if(!strcmp(command,"showEvents")){
             showEvents(head,userInput);
@@ -574,3 +576,7 @@ int main(){
 
     return 0;
 }
+
+//changes needed
+// [from,to)
+// show venues in the order of insertion
