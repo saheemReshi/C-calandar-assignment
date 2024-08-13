@@ -118,15 +118,17 @@ struct venue * addVenue(struct venue *head, int *venueCount, char userInput[])
 
 }
 
+void printReverse(struct venue * head){
+    if(head->next) printReverse(head->next);
+    printf("%s %s %s\n",head->name,head->loc,head->cap);
+
+}
+
 void showVenues(struct venue * head, int venueCount){
     printf("%d\n",venueCount);
-    
-    while(head){
-        // printf("hola ");
-        printf("%s %s %s\n",head->name,head->loc,head->cap);
-        fflush(stdout);
-        head=head->next;
-    }
+    //i need to print venues in reverse order because of the way i had added the venues in the linked list
+    if(head) printReverse(head);
+
 }
 
 struct venue* delVenue(int * venueCount, struct venue * head,char userInput[]){
@@ -539,8 +541,10 @@ int main(){
     fgets(userInput,sizeof(userInput),stdin);
     int venueCount=0;
     struct venue * head=NULL;//this is the linked list that will store the venues
+    // printf("hola\n");
 
-    while(strcmp(userInput,"End\n")!=0){
+    while(strcmp(userInput,"End\n")!=0 && strcmp(userInput,"End")!=0){
+        // printf("hola\n");
         char * command=separateCommand(userInput);
         if(!strcmp(command,"addVenue")){
             head=addVenue(head,&venueCount,userInput);
@@ -571,9 +575,8 @@ int main(){
 
         free(command);//don't want memory leaks!
         fgets(userInput,sizeof(userInput),stdin);
+        // printf("%s",userInput);
     }
-
-
     return 0;
 }
 
