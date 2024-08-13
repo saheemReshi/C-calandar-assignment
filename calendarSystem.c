@@ -198,7 +198,7 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
     struct event* x=v->date[d];//this is the head of the linked list
 
     //first i'll check if the head of this linked list satisfies the insertion condition
-    if(t < x->s){
+    if(t <= x->s){
         struct event * a=malloc(sizeof(struct event));
         a->s=f;
         a->e=t;
@@ -210,11 +210,11 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
         printf("0\n");
         return;
     }
-    else if(x->e < f){//now here i'll check for x->next so that i can easily insert in the linkedList
+    else if(x->e <= f){//now here i'll check for x->next so that i can easily insert in the linkedList
         struct event * p=x;
         x=x->next;
         while(x){
-            if(t < x->s){
+            if(t <= x->s){
                 //insert condition
                 struct event * a=malloc(sizeof(struct event));
                 a->s=f;
@@ -228,7 +228,7 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
                 printf("0\n");
                 return;
             }
-            else if(x->e < f){
+            else if(x->e <= f){
                 //move on condition
                 p=x;
                 x=x->next;
@@ -313,14 +313,11 @@ void addEvent(struct venue * head,char userInput[]){
     }
     int d=atoi(date),f=atoi(from),t=atoi(to);//these are date, from-time, to-time in integer format for error checking
 
-    if(d<1 || d>30 || f<0 || f>23 || t<0 || t>23 || f>t){
+    // t--;//this is done because my implementation will make both [from-time, to-time] inclusive in the calendar, but to-time is exclusive in the inputs
+    if(d<1 || d>30 || f<0 || f>23 || t<0 || t>23 || f>=t){
         printf("-1\nError: Invalid date or time\n");
         return;
     }
-
-    // printf("%d %d %d\n",d,f,t);
-    
-    //now, everything is valid(fornow!)
 
     //now i'll search for the venue in the linkedList
     struct venue* temp=head;
@@ -580,6 +577,3 @@ int main(){
     return 0;
 }
 
-//changes needed
-// [from,to)
-// show venues in the order of insertion
