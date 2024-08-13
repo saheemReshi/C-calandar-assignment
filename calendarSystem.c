@@ -221,7 +221,7 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
                 a->e=t;
                 strcpy(a->name,eName);
                 a->next=x;
-                v->date[d]=a;
+                // v->date[d]=a;//<<--this is a problem
                 v->totalEvents++;
                 v->eventsOnDate[d]++;
                 p->next=a;
@@ -246,7 +246,7 @@ void insertEventInVenue(struct venue* v,char eName[],int d,int f,int t){
         a->e=t;
         strcpy(a->name,eName);
         a->next=NULL;
-        v->date[d]=a;
+        // v->date[d]=a;//<<--problem!!**
         v->totalEvents++;
         v->eventsOnDate[d]++;
         p->next=a;
