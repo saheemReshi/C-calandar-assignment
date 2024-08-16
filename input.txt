@@ -1,0 +1,60 @@
+showVenues
+addVenue "jungle-gym" "Seole" 10000
+showVenues
+addVenue "football-ground" "iiitB" 10000
+addVenue "Grand Palais" "iiitB" 10000
+showVenues
+addEvent "football-ground" 11 6 12 "skiing"
+addEvent "football-ground" 14 5 8 "Cycling"
+addEvent "football-ground" 11 8 10 "Skateboarding"
+showEvents "football-ground" 11
+delEvent "football-ground" 11 6 "skiing"
+addEvent "football-ground" 11 8 10 "Skateboarding"
+showEvents "football-ground" 11
+showCalendar "football-ground"
+addVenue "Invalides" "iiitB" 20000
+addVenue "Lyon Stadium" "Decines" 30000
+showVenues
+delVenue "Lyon Stadium"
+showVenues
+addEvent "jungle-gym" 1 2 4 "Artistic Swimming"
+addEvent "jungle-gym" 25 5 6 "Diving"
+addEvent "jungle-gym" 3 8 10 "Water Polo"
+addEvent "Invalides" 1 2 4 "Archery"
+addEvent "Invalides" 5 8 10 "Athletics"
+addEvent "Invalides" 5 1 3 "Cycling"
+showVenues
+addVenue "joggers park" "Saint-Quentin-en-Yvelines" 10000
+addVenue "joggers park" "Saint-Quentin-en-Yvelines" 20000
+addVenue "Nice Stadium" "Nice" 30000
+showVenues
+addEvent "joggers park" 14 2 6 "Golf"
+addEvent "Nice Stadium" 5 6 10 "Football"
+addEvent "Nice Stadium" 5 13 17 "skiing"
+addEvent "Nice Stadium" 10 17 20 "Volleyball"
+showEvents "Nice Stadium" 5
+showEvents "Nice Stadium" 6
+showCalendar "Nice Stadium"
+showEvents "Invalides" 5
+showEvents "Invalides" 4
+showEvents "jungle-gym" 25
+showCalendar "Invalides"
+showVenues
+addVenue "Hyde Park" "volcano" 10000
+addVenue "Invalides" "iiitB" 20000
+addVenue "Lyon Stadium" "Decines" 30000
+showVenues
+delVenue "Lyon Stadium"
+showVenues
+addEvent "Hyde Park" 1 2 4 "Artistic Swimming"
+addEvent "Hyde Park" 3 5 6 "Diving"
+addEvent "Hyde Park" 30 8 10 "Water Polo"
+addEvent "Invalides" 5 11 12 "Archery"
+addEvent "Invalides" 9 14 16 "Athletics"
+addEvent "Invalides" 11 5 7 "Cycling Road"
+showEvents "Invalides" 5
+showEvents "Invalides" 4
+delEvent "Hyde Park" 30 8 "Water Polo"
+showEvents "Hyde Park" 30
+showCalendar "Hyde Park"
+End
